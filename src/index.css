@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #f8c9c4;
+}
+
+body {
+  font-family: 'Playfair Display', serif;
+}
+
+.booking-input {
+  border-bottom: 1px solid #d1d5db;
+  background: transparent;
+  padding: .5rem 0;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 13px;
+  outline: none;
+}
+
+.booking-input:focus {
+  border-color: #3A2A20;
+}
