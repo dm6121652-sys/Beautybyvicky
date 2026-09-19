@@ -22,8 +22,9 @@ CREATE TABLE IF NOT EXISTS public.bookings (
   details JSONB
 );
 
--- If your bookings table already exists, run this to add the phone column:
--- ALTER TABLE public.bookings ADD COLUMN IF NOT EXISTS phone TEXT;
+-- Ensure the phone column exists for existing installations
+ALTER TABLE public.bookings
+  ADD COLUMN IF NOT EXISTS phone TEXT;
 
 -- Optional index to query paid bookings quickly
 CREATE INDEX IF NOT EXISTS idx_bookings_status ON public.bookings (status);
