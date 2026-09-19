@@ -39,9 +39,10 @@ export default function About() {
             </p>
           </div>
 
-          <button className="mt-10 bg-white text-[#3A2A20] border border-gray-200 px-6 py-3 rounded-full text-[10px] font-sans tracking-widest uppercase hover:bg-gray-50 transition-colors shadow-sm">
+          <a href="#booking" className="inline-block mt-10 bg-white text-[#3A2A20] border border-gray-200 px-6 py-3 rounded-full text-[10px] font-sans tracking-widest uppercase hover:bg-gray-50 transition-colors shadow-sm">
             Book Now
-          </button>
+          </a>
+
         </div>
 
         {/* Right Image Carousel */}
@@ -84,3 +85,4 @@ export default function About() {
     </div>
   );
 }
+

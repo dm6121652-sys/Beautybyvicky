@@ -3,13 +3,13 @@ import React from 'react';
 const services = [
   {
     title: "Bridal Glam",
-    price: "From $250",
+    price: "From ₦50,000",
     description: "Flawless, long-lasting makeup tailored for your special day. Includes a full consultation, skin prep, and premium lashes.",
     image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=800&auto=format&fit=crop"
   },
   {
     title: "Soft Glam",
-    price: "From $150",
+    price: "From ₦30,000",
     description: "A beautifully blended, radiant look perfect for events, photoshoots, or date nights. Enhances your features without feeling heavy.",
     image: "https://images.unsplash.com/photo-1512496015851-a1cbfc38d011?q=80&w=800&auto=format&fit=crop"
   },
@@ -21,7 +21,9 @@ const services = [
   }
 ];
 
-export default function Services() {
+export { services as defaultServices }
+
+export default function Services({ services: managedServices = services, onBook }) {
   return (
     <div id="services" className="min-h-screen w-full bg-[#FDFBF7] py-24 px-8 flex flex-col items-center justify-center">
       <div className="max-w-7xl mx-auto w-full">
@@ -32,7 +34,7 @@ export default function Services() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {services.map((service, index) => (
+          {managedServices.map((service, index) => (
             <div key={index} className="bg-white rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col">
               <div className="relative w-full h-[220px] mb-6 rounded-2xl overflow-hidden">
                 <img 
@@ -42,15 +44,16 @@ export default function Services() {
                 />
               </div>
               
-              <div className="flex justify-between items-baseline mb-4">
+              <div className="flex justify-between items-baseline gap-3 mb-4">
                 <h3 className="text-xl font-serif font-semibold text-[#3A2A20]">{service.title}</h3>
+                {service.price && <span className="shrink-0 text-xs font-bold text-[#a35f65]">{service.price}</span>}
               </div>
               
               <p className="font-sans text-[13px] leading-relaxed text-[#8C7A70] mb-8 flex-grow">
                 {service.description}
               </p>
               
-              <button className="w-full py-3 border border-[#3A2A20] text-[#3A2A20] rounded-full text-[10px] font-sans tracking-widest uppercase hover:bg-[#3A2A20] hover:text-white transition-colors">
+              <button onClick={() => onBook?.(service.title)} className="w-full rounded-full bg-[#3A2A20] py-3 text-[10px] font-sans tracking-widest uppercase text-white shadow-sm transition-all hover:-translate-y-0.5 hover:bg-[#5a4032] hover:shadow-md">
                 Book This Service
               </button>
             </div>
@@ -61,3 +64,4 @@ export default function Services() {
     </div>
   );
 }
+

@@ -1,7 +1,7 @@
 import React from 'react';
 import MagneticCarousel, { DEFAULT_IMAGES } from './components/MagneticCarousel';
 import About from './components/About';
-import Services from './components/Services';
+import Services, { defaultServices } from './components/Services';
 import FAQ from './components/FAQ';
 import Booking from './components/Booking';
 import Footer from './components/Footer';
@@ -41,9 +41,11 @@ function Navbar() {
       </div>
       
       {/* Center: Logo */}
-      <div className="absolute left-1/2 z-10 flex -translate-x-1/2 flex-col items-center justify-center text-white drop-shadow-md md:static md:flex-1 md:translate-x-0 md:drop-shadow-none">
+      <div className="absolute left-1/2 z-10 flex -translate-x-1/2 flex-col items-center justify-center text-white drop-shadow-md md:flex-1 md:drop-shadow-none">
         {/* Logo image: place your file at public/logo.png */}
-        <img src="/logo.png" alt="Beauty by Vickys" className="h-28 md:h-44 object-contain" />
+        <div className="h-20 w-32 overflow-hidden md:h-24 md:w-44">
+          <img src="/logo.png" alt="Beauty by Vickys" className="h-full w-full scale-[2.15] object-contain" />
+        </div>
       </div>
       
       {/* Right: Icon */}
@@ -120,6 +122,8 @@ function Hero({ images }) {
 
 function App() {
   const [magImages, setMagImages] = React.useState(DEFAULT_IMAGES)
+  const [services, setServices] = React.useState(defaultServices)
+  const [selectedService, setSelectedService] = React.useState('')
   const [isAdminPath, setIsAdminPath] = React.useState(typeof window !== 'undefined' && window.location.hash === '#admin')
 
   React.useEffect(() => {
@@ -127,6 +131,29 @@ function App() {
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
+
+  React.useEffect(() => {
+    const loadServices = () => {
+      if (!supabase) return
+      supabase.from('services').select('*').order('sort_order').then(({ data, error }) => {
+        if (error || !data?.length) return
+        setServices(data.map((service, index) => ({
+          title: service.title,
+          price: service.price,
+          description: service.description,
+          image: service.image_url || defaultServices[index % defaultServices.length].image
+        })))
+      })
+    }
+    loadServices()
+    window.addEventListener('services-updated', loadServices)
+    return () => window.removeEventListener('services-updated', loadServices)
+  }, [])
+
+  const bookService = (service) => {
+    setSelectedService(service)
+    window.setTimeout(() => document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' }), 0)
+  }
 
   React.useEffect(() => {
     let mounted = true
@@ -186,8 +213,8 @@ function App() {
     <div className="font-serif">
       <Hero images={magImages} />
       <About />
-      <Services />
-      <Booking />
+      <Services services={services} onBook={bookService} />
+      <Booking services={services} selectedService={selectedService} />
       <FAQ />
       <Footer />
     </div>

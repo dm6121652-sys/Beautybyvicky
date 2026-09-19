@@ -1,10 +1,7 @@
 import React from 'react';
 import HoverImageReveal from './HoverImageReveal';
 
-import { useEffect, useState } from 'react'
-import { supabase } from '../lib/supabase'
-
-const fallbackGallery = {
+const galleryItems = {
   itemCount: 6,
   item1: {
     text: "BRIDAL GLAM",
@@ -33,45 +30,10 @@ const fallbackGallery = {
 };
 
 export default function Gallery() {
-  const [items, setItems] = useState(fallbackGallery)
-
-  useEffect(() => {
-    if (!supabase) {
-      // keep fallback items and show a console hint
-      console.warn('Supabase not configured — using fallback gallery images')
-      return
-    }
-
-    let mounted = true
-    async function load() {
-      try {
-        const keys = ['gallery_item1','gallery_item2','gallery_item3','gallery_item4','gallery_item5','gallery_item6']
-        const { data, error } = await supabase.from('assets').select('key,url').in('key', keys)
-        if (error) {
-          // silent fallback
-          return
-        }
-        if (!mounted) return
-        const map = {};
-        (data || []).forEach(a => { map[a.key] = a.url })
-        const custom = { ...fallbackGallery }
-        for (let i = 1; i <= 6; i++) {
-          const k = `gallery_item${i}`
-          if (map[k]) custom[`item${i}`].image.src = map[k]
-        }
-        setItems(custom)
-      } catch (e) {
-        console.error(e)
-      }
-    }
-    load()
-    return () => { mounted = false }
-  }, [])
-
   return (
     <div id="gallery" className="h-screen w-full bg-white">
       <HoverImageReveal
-        items={items}
+        items={galleryItems}
         backgroundColor="#FFFFFF"
         textColor="#3A2A20"
         dimColor="#D3C9C1"
