@@ -7,7 +7,7 @@ export default function Footer() {
         
         {/* Brand */}
         <div className="text-center md:text-left">
-          <img src="/logo.png" alt="Beauty by Vickys" className="h-12 mx-auto md:mx-0 object-contain" />
+          <img src="/logo.png" alt="Beauty by Vickys" className="h-20 mx-auto md:mx-0 object-contain" />
           <p className="mt-2 text-[10px] font-sans uppercase tracking-widest text-gray-400">Luxury Makeup Artistry</p>
         </div>
 

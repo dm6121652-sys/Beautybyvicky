@@ -43,7 +43,7 @@ function Navbar() {
       {/* Center: Logo */}
       <div className="absolute left-1/2 z-10 flex -translate-x-1/2 flex-col items-center justify-center text-white drop-shadow-md md:static md:flex-1 md:translate-x-0 md:drop-shadow-none">
         {/* Logo image: place your file at public/logo.png */}
-        <img src="/logo.png" alt="Beauty by Vickys" className="h-20 md:h-28 object-contain" />
+        <img src="/logo.png" alt="Beauty by Vickys" className="h-28 md:h-44 object-contain" />
       </div>
       
       {/* Right: Icon */}
