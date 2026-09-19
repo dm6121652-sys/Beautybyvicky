@@ -142,12 +142,13 @@ function App() {
         if (!mounted) return
         const map = {}
         (data || []).forEach(a => { map[a.key] = a.url })
-        const images = []
-        for (let i = 0; i < 5; i++) {
-          const key = `magnetic_${i}`
-          if (map[key]) images.push({ src: map[key] })
-        }
-        if (images.length) setMagImages(images)
+        console.log('Loaded asset map for magnetic images:', map)
+        // build images array by starting from defaults and replacing positions that exist in map
+        const images = DEFAULT_IMAGES.slice(0,5).map((d, idx) => {
+          const key = `magnetic_${idx}`
+          return map[key] ? { src: map[key] } : d
+        })
+        setMagImages(images)
       } catch (e) {
         console.error('Error loading magnetic images', e)
       }

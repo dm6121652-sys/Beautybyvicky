@@ -13,6 +13,7 @@ export default function Footer() {
 
         {/* Links */}
         <div className="flex gap-8 text-[11px] font-sans uppercase tracking-widest">
+          <a href="#admin" className="hover:text-gray-400 transition-colors">Admin</a>
           <a href="#about" className="hover:text-gray-400 transition-colors">About</a>
           <a href="#services" className="hover:text-gray-400 transition-colors">Services</a>
           <a href="#booking" className="hover:text-gray-400 transition-colors">Book</a>
