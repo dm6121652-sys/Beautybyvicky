@@ -41,9 +41,9 @@ function Navbar() {
       </div>
       
       {/* Center: Logo */}
-      <div className="absolute left-1/2 z-10 flex -translate-x-1/2 flex-col items-center justify-center text-white drop-shadow-md md:static md:flex-1 md:translate-x-0 md:text-[#3A2A20] md:drop-shadow-none">
-        <span className="text-[8px] tracking-[0.2em] uppercase font-sans mb-1 font-bold">Beauty by</span>
-        <div className="text-3xl font-serif">Vickys</div>
+      <div className="absolute left-1/2 z-10 flex -translate-x-1/2 flex-col items-center justify-center text-white drop-shadow-md md:static md:flex-1 md:translate-x-0 md:drop-shadow-none">
+        {/* Logo image: place your file at public/logo.png */}
+        <img src="/logo.png" alt="Beauty by Vickys" className="h-16 md:h-20 object-contain" />
       </div>
       
       {/* Right: Icon */}

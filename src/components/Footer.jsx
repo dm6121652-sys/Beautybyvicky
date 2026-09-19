@@ -7,8 +7,8 @@ export default function Footer() {
         
         {/* Brand */}
         <div className="text-center md:text-left">
-          <h2 className="text-3xl font-serif mb-2">Vickys</h2>
-          <p className="text-[10px] font-sans uppercase tracking-widest text-gray-400">Luxury Makeup Artistry</p>
+          <img src="/logo.png" alt="Beauty by Vickys" className="h-12 mx-auto md:mx-0 object-contain" />
+          <p className="mt-2 text-[10px] font-sans uppercase tracking-widest text-gray-400">Luxury Makeup Artistry</p>
         </div>
 
         {/* Links */}
