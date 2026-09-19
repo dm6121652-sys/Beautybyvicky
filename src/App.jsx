@@ -134,7 +134,11 @@ function App() {
       if (!supabase || typeof supabase.from !== 'function') return
       try {
         const keys = ['magnetic_0','magnetic_1','magnetic_2','magnetic_3','magnetic_4']
-        const { data, error } = await supabase.from('assets').select('key,url').in('key', keys)
+        // Some environments (minified bundles) may not support the chained `.in()` call reliably.
+        // Fetch all assets and filter client-side for robustness.
+        const res = await supabase.from('assets').select('key,url')
+        const data = res.data
+        const error = res.error
         if (error) {
           console.warn('Failed to load magnetic images', error)
           return
@@ -143,7 +147,6 @@ function App() {
         const map = {}
         (data || []).forEach(a => { map[a.key] = a.url })
         console.log('Loaded asset map for magnetic images:', map)
-        // build images array by starting from defaults and replacing positions that exist in map
         const images = DEFAULT_IMAGES.slice(0,5).map((d, idx) => {
           const key = `magnetic_${idx}`
           return map[key] ? { src: map[key] } : d
