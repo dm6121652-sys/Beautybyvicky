@@ -1,12 +1,11 @@
 import React from 'react';
 import MagneticCarousel, { DEFAULT_IMAGES } from './components/MagneticCarousel';
-import AdminPanel from './components/AdminPanel';
-import { supabase } from './lib/supabase';
 import About from './components/About';
 import Services from './components/Services';
 import FAQ from './components/FAQ';
 import Booking from './components/Booking';
 import Footer from './components/Footer';
+import { supabase } from './lib/supabase';
 
 function Navbar() {
   const [scrollY, setScrollY] = React.useState(0);
@@ -101,7 +100,6 @@ function Hero({ images }) {
           images={heroImages}
           collapsedWidth={isMobile ? winWidth : winWidth / 5}
           hoverWidth={isMobile ? winWidth : (winWidth / 5) * 1.5}
-          rounded={isMobile ? 0 : 24}
         />
       </div>
 
@@ -120,52 +118,39 @@ function Hero({ images }) {
 }
 
 function App() {
-  const [isAdminPath, setIsAdminPath] = React.useState(typeof window !== 'undefined' && window.location.hash === '#admin')
-  const [magImages, setMagImages] = React.useState(null)
+  const [magImages, setMagImages] = React.useState(DEFAULT_IMAGES)
 
   React.useEffect(() => {
-    const onHash = () => setIsAdminPath(window.location.hash === '#admin')
-    window.addEventListener('hashchange', onHash)
-    return () => window.removeEventListener('hashchange', onHash)
-  }, [])
-
-  // load magnetic carousel images from Supabase assets table (keys: magnetic_0...magnetic_4)
-  React.useEffect(() => {
-    if (!supabase || typeof supabase.from !== 'function') {
-      console.warn('Supabase not configured — magnetic carousel will use defaults')
-      return
-    }
-
     let mounted = true
     async function loadMag() {
+      if (!supabase || typeof supabase.from !== 'function') return
       try {
-        const { data, error } = await supabase.from('assets').select('key,url').in('key', ['magnetic_0','magnetic_1','magnetic_2','magnetic_3','magnetic_4'])
+        const keys = ['magnetic_0','magnetic_1','magnetic_2','magnetic_3','magnetic_4']
+        const { data, error } = await supabase.from('assets').select('key,url').in('key', keys)
         if (error) {
-          console.warn('Failed to load magnetic assets:', error)
+          console.warn('Failed to load magnetic images', error)
           return
         }
         if (!mounted) return
-        const map = {};
-        (data || []).forEach(a => map[a.key] = a.url)
-        const images = DEFAULT_IMAGES.map((fallback, i) => {
+        const map = {}
+        (data || []).forEach(a => { map[a.key] = a.url })
+        const images = []
+        for (let i = 0; i < 5; i++) {
           const key = `magnetic_${i}`
-          return map[key] ? { src: map[key] } : fallback
-        })
-        setMagImages(images)
+          if (map[key]) images.push({ src: map[key] })
+        }
+        if (images.length) setMagImages(images)
       } catch (e) {
-        console.error('Unexpected error loading magnetic assets', e)
+        console.error('Error loading magnetic images', e)
       }
     }
     loadMag()
     return () => { mounted = false }
   }, [])
 
-  if (isAdminPath) return <AdminPanel />
-
   return (
     <div className="font-serif">
       <Hero images={magImages} />
-      <MagneticCarousel images={magImages} />
       <About />
       <Services />
       <Booking />
