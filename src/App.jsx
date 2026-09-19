@@ -140,6 +140,11 @@ function App() {
         }
 
         const res = await supabase.from('assets').select('key,url')
+        console.log('supabase assets response:', res)
+        if (!res || typeof res !== 'object') {
+          console.warn('Unexpected response from Supabase when loading assets:', res)
+          return
+        }
         const data = res.data
         const error = res.error
         if (error) {
@@ -147,10 +152,16 @@ function App() {
           return
         }
         if (!mounted) return
+        if (!Array.isArray(data)) {
+          console.warn('Supabase returned non-array data for assets:', data)
+          // fall back to defaults
+          setMagImages(DEFAULT_IMAGES.slice(0,5))
+          return
+        }
         const map = {}
-        (data || []).forEach(a => { map[a.key] = a.url })
+        data.forEach(a => { if (a && a.key) map[a.key] = a.url })
         console.log('Loaded asset map for magnetic images:', map)
-        // Build images without using Array.prototype.map in case DEFAULT_IMAGES is unexpectedly non-array in a deployed bundle
+        // Build images array safely
         const base = Array.isArray(DEFAULT_IMAGES) ? DEFAULT_IMAGES.slice(0,5) : []
         const images = []
         for (let idx = 0; idx < 5; idx++) {
