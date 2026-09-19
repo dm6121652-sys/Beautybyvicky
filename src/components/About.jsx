@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
 const aboutImages = [
-  "https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=2000&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=2000&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1512496015851-a1cbfc38d011?q=80&w=2000&auto=format&fit=crop"
+  "SaveClip.App_649437419_18072472262542474_362457672412877832_n.jpg",
+  "SaveClip.App_649594978_18072472310542474_5746388519295994587_n.jpg",
+  "SaveClip.App_649513764_18072472274542474_4793150705997754731_n.jpg"
 ];
 
 export default function About() {
@@ -20,13 +20,13 @@ export default function About() {
   return (
     <div id="about" className="min-h-screen flex items-center justify-center py-20 px-8" style={{ backgroundColor: '#FDFBF7' }}>
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        
+
         {/* Left Text Content */}
         <div className="text-[#3A2A20] pr-8">
           <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6 leading-tight">
             About Beauty<br />by Vicky
           </h2>
-          
+
           <div className="space-y-5 font-sans text-[13px] leading-relaxed text-[#8C7A70]">
             <p>
               As the lead makeup artist at Beauty by Vicky, I've spent over 5 years helping women look and feel their absolute best.
@@ -59,7 +59,7 @@ export default function About() {
 
           {/* Controls */}
           <div className="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col gap-3">
-            <button 
+            <button
               onClick={prevImage}
               className="w-8 h-8 rounded-full border border-white/50 text-white flex items-center justify-center hover:bg-white/20 transition backdrop-blur-sm"
               aria-label="Previous image"
@@ -68,7 +68,7 @@ export default function About() {
                 <path d="M18 15L12 9L6 15" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
-            <button 
+            <button
               onClick={nextImage}
               className="w-8 h-8 rounded-full border border-white/50 text-white flex items-center justify-center hover:bg-white/20 transition backdrop-blur-sm"
               aria-label="Next image"
