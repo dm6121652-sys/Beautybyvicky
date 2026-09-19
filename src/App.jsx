@@ -5,6 +5,7 @@ import Services from './components/Services';
 import FAQ from './components/FAQ';
 import Booking from './components/Booking';
 import Footer from './components/Footer';
+import AdminPanel from './components/AdminPanel';
 import { supabase } from './lib/supabase';
 
 function Navbar() {
@@ -119,6 +120,13 @@ function Hero({ images }) {
 
 function App() {
   const [magImages, setMagImages] = React.useState(DEFAULT_IMAGES)
+  const [isAdminPath, setIsAdminPath] = React.useState(typeof window !== 'undefined' && window.location.hash === '#admin')
+
+  React.useEffect(() => {
+    const onHash = () => setIsAdminPath(window.location.hash === '#admin')
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
 
   React.useEffect(() => {
     let mounted = true
@@ -147,6 +155,8 @@ function App() {
     loadMag()
     return () => { mounted = false }
   }, [])
+
+  if (isAdminPath) return <AdminPanel />
 
   return (
     <div className="font-serif">
