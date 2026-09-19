@@ -101,6 +101,7 @@ function Hero({ images }) {
           images={heroImages}
           collapsedWidth={isMobile ? winWidth : winWidth / 5}
           hoverWidth={isMobile ? winWidth : (winWidth / 5) * 1.5}
+          rounded={isMobile ? 0 : 24}
         />
       </div>
 

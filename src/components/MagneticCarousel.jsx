@@ -193,6 +193,7 @@ function __OriginkitBase_MagneticCarousel(props) {
         <div
             ref={containerRef}
             style={{
+                style: {
                 ...style,
                 width: "100%",
                 height: "100%",
@@ -202,6 +203,8 @@ function __OriginkitBase_MagneticCarousel(props) {
                 gap,
                 position: "relative",
                 overflow: "hidden",
+                borderRadius: typeof rounded === 'number' ? `${rounded}px` : rounded,
+            },
             }}
             onMouseMove={onMove}
             onMouseLeave={onLeave}
