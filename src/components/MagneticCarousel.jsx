@@ -80,6 +80,9 @@ function __OriginkitBase_MagneticCarousel(props) {
         style = {},
     } = props
 
+    // normalize rounded into a CSS value we can reuse safely
+    const safeRounded = typeof rounded === 'number' ? `${rounded}px` : (rounded || 0)
+
     const items =
         Array.isArray(images) && images.length > 0 ? images : DEFAULT_IMAGES
     const count = items.length
@@ -203,7 +206,7 @@ function __OriginkitBase_MagneticCarousel(props) {
                 gap,
                 position: "relative",
                 overflow: "hidden",
-                borderRadius: typeof rounded === 'number' ? `${rounded}px` : rounded,
+                borderRadius: safeRounded,
             },
             }}
             onMouseMove={onMove}
