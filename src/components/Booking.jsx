@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { supabase } from '../lib/supabase'
 
-const initialForm = { firstName: '', lastName: '', email: '', service: 'Bridal Glam', preferredDate: '', details: '' }
+const initialForm = { firstName: '', lastName: '', phone: '', email: '', service: 'Bridal Glam', preferredDate: '', details: '' }
 
 export default function Booking() {
   const [form, setForm] = useState(initialForm)
@@ -16,6 +16,7 @@ export default function Booking() {
     try {
       const { error } = await supabase.from('bookings').insert({
         customer_name: `${form.firstName} ${form.lastName}`.trim(),
+        phone: form.phone || null,
         email: form.email,
         status: 'pending',
         details: { service: form.service, preferred_date: form.preferredDate, notes: form.details }
@@ -36,7 +37,7 @@ export default function Booking() {
       <div className="w-full md:w-7/12 p-10 lg:p-14">
         <form className="space-y-6" onSubmit={submitBooking}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6"><Field label="First Name"><input required value={form.firstName} onChange={update('firstName')} type="text" className="booking-input" placeholder="Jane"/></Field><Field label="Last Name"><input required value={form.lastName} onChange={update('lastName')} type="text" className="booking-input" placeholder="Doe"/></Field></div>
-          <Field label="Email Address"><input required value={form.email} onChange={update('email')} type="email" className="booking-input" placeholder="jane@example.com"/></Field>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6"><Field label="Phone Number"><input required value={form.phone} onChange={update('phone')} type="tel" className="booking-input" placeholder="+234 900 000 0000"/></Field><Field label="Email Address"><input required value={form.email} onChange={update('email')} type="email" className="booking-input" placeholder="jane@example.com"/></Field></div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6"><Field label="Service Needed"><select value={form.service} onChange={update('service')} className="booking-input"><option>Bridal Glam</option><option>Soft Glam</option><option>Editorial Makeup</option><option>Makeup Lesson</option></select></Field><Field label="Preferred Date"><input required value={form.preferredDate} onChange={update('preferredDate')} type="date" min={new Date().toISOString().split('T')[0]} className="booking-input text-gray-500"/></Field></div>
           <Field label="Additional Details"><textarea value={form.details} onChange={update('details')} rows="3" className="booking-input resize-none" placeholder="Tell us about your event..."/></Field>
           <div className="pt-4"><label className="text-[10px] font-sans uppercase tracking-widest text-[#8C7A70] mb-2 block">Client Booking Policy</label><div className="h-32 overflow-y-auto p-4 border border-gray-200 rounded-lg text-[11px] font-sans text-gray-500 leading-relaxed mb-4 bg-gray-50"><p className="mb-2"><strong>PAYMENT POLICY</strong><br/>A 50% deposit is required to secure your appointment. Deposits are non-refundable once a booking is confirmed.</p><p className="mb-2"><strong>CANCELLATION & RESCHEDULING</strong><br/>Please give at least 48 hours notice for changes. Same-day cancellations and no-shows forfeit the deposit.</p><p><strong>APPOINTMENT PREPARATION</strong><br/>Please arrive with a clean face and communicate any allergies or skin sensitivities before your appointment.</p></div><label className="flex items-start gap-2 cursor-pointer"><input required type="checkbox" className="mt-1"/><span className="text-[11px] font-sans text-[#8C7A70]">By checking this box, you confirm that you have read, understood and agreed to the booking policies above.</span></label></div>
