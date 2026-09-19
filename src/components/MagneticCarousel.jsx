@@ -17,19 +17,19 @@ const EASE_PRESETS = {
 
 export const DEFAULT_IMAGES = [
     {
-        src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/612d1402-0ad9-4135-3bbc-a30a6a252b00/w=800",
+        src: "SaveClip.App_650764510_18072472298542474_3037681809508420382_n.jpg",
     },
     {
-        src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/6d2ad64a-102d-4eab-0efe-31479e34b500/w=800",
+        src: "SaveClip.App_650143319_18072472301542474_202503320149626747_n.jpg",
     },
     {
-        src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/51984031-9176-484b-f5e0-4af9a8e9ed00/w=800",
+        src: "SaveClip.App_649437419_18072472262542474_362457672412877832_n.jpg",
     },
     {
-        src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/34ce1842-4b7a-4d52-0302-38582c341700/w=800",
+        src: "SaveClip.App_649594978_18072472310542474_5746388519295994587_n.jpg",
     },
     {
-        src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/88369c6d-00cc-4ac9-74ca-0f0965e06300/w=800",
+        src: "SaveClip.App_649513764_18072472274542474_4793150705997754731_n.jpg",
     }
 ]
 
@@ -79,9 +79,6 @@ function __OriginkitBase_MagneticCarousel(props) {
         transition = { type: "tween", duration: 0.3, ease: "easeInOut" },
         style = {},
     } = props
-
-    // normalize rounded into a CSS value we can reuse safely
-    const safeRounded = typeof rounded === 'number' ? `${rounded}px` : (rounded || 0)
 
     const items =
         Array.isArray(images) && images.length > 0 ? images : DEFAULT_IMAGES
@@ -196,7 +193,6 @@ function __OriginkitBase_MagneticCarousel(props) {
         <div
             ref={containerRef}
             style={{
-                style: {
                 ...style,
                 width: "100%",
                 height: "100%",
@@ -206,8 +202,6 @@ function __OriginkitBase_MagneticCarousel(props) {
                 gap,
                 position: "relative",
                 overflow: "hidden",
-                borderRadius: safeRounded,
-            },
             }}
             onMouseMove={onMove}
             onMouseLeave={onLeave}
@@ -226,7 +220,7 @@ function __OriginkitBase_MagneticCarousel(props) {
                 const { width, height } = sizeFor(i)
                 const blurred = open !== null && i !== open
                 const isVideo = img && img.src && (img.src.endsWith('.mp4') || img.src.endsWith('.webm') || img.type === 'video')
-                
+
                 return (
                     <div
                         key={i}
@@ -275,6 +269,24 @@ function __OriginkitBase_MagneticCarousel(props) {
                                     left: 0,
                                     pointerEvents: "none"
                                 }}
+                            />
+                        )}
+
+                        {/* Fallback: render an actual <img> element for broad compatibility */}
+                        {!isVideo && img && (
+                            <img
+                                src={img.src}
+                                alt="carousel"
+                                style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    objectFit: "cover",
+                                    position: "absolute",
+                                    top: 0,
+                                    left: 0,
+                                    pointerEvents: "none",
+                                }}
+                                onError={(e) => { console.warn('Carousel image failed to load:', img && img.src); e.currentTarget.style.display = 'none' }}
                             />
                         )}
                     </div>
