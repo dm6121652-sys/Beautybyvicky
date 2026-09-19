@@ -131,11 +131,14 @@ function App() {
   React.useEffect(() => {
     let mounted = true
     async function loadMag() {
-      if (!supabase || typeof supabase.from !== 'function') return
       try {
-        const keys = ['magnetic_0','magnetic_1','magnetic_2','magnetic_3','magnetic_4']
-        // Some environments (minified bundles) may not support the chained `.in()` call reliably.
-        // Fetch all assets and filter client-side for robustness.
+        console.log('supabase client at loadMag:', supabase)
+        console.log('supabase.from type:', supabase && typeof supabase.from)
+        if (!supabase || typeof supabase.from !== 'function') {
+          console.warn('Supabase client not available or invalid in loadMag')
+          return
+        }
+
         const res = await supabase.from('assets').select('key,url')
         const data = res.data
         const error = res.error
@@ -147,10 +150,16 @@ function App() {
         const map = {}
         (data || []).forEach(a => { map[a.key] = a.url })
         console.log('Loaded asset map for magnetic images:', map)
-        const images = DEFAULT_IMAGES.slice(0,5).map((d, idx) => {
+        // Build images without using Array.prototype.map in case DEFAULT_IMAGES is unexpectedly non-array in a deployed bundle
+        const base = Array.isArray(DEFAULT_IMAGES) ? DEFAULT_IMAGES.slice(0,5) : []
+        const images = []
+        for (let idx = 0; idx < 5; idx++) {
           const key = `magnetic_${idx}`
-          return map[key] ? { src: map[key] } : d
-        })
+          if (map[key]) images.push({ src: map[key] })
+          else if (base[idx]) images.push(base[idx])
+          else images.push({ src: '' })
+        }
+        console.log('Final images array for carousel:', images)
         setMagImages(images)
       } catch (e) {
         console.error('Error loading magnetic images', e)
